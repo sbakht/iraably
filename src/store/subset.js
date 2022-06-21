@@ -9,30 +9,30 @@ const isSubset = (subset, superset) => {
   return allTrue(subset.map(includes(superset)))
 }
 
-const equals = (subset, superset) {
-  if(subset.length !== superset.length) {
+const equals = (subset, superset) => {
+  if (subset.length !== superset.length) {
     return false;
   }
 
   return isSubset(subset, superset);
 }
 
-export const useQuiz = (s = [], ss = []) => {
-  const choices = [];
-  const correctAnswers = [];
-  const selected = ref([]);
+export const subset = (s = [], ss = []) => {
+  // const choices = [];
+  const correctAnswers = s;
+  const selected = ref(ss);
 
 
   const incorrectSelections = computed(() => {
-    return selected.value.filter(s => !includes(correctAnswers)(s)) 
+    return selected.value.filter(s => !includes(correctAnswers)(s))
   });
 
   const correctSelections = computed(() => {
-    return selected.value.filter(includes(correctAnswers)) 
+    return selected.value.filter(includes(correctAnswers))
   });
 
   const missingSelections = computed(() => {
-    return correctAnswers.filter(s => !includes(selected.value)(s)) 
+    return correctAnswers.filter(s => !includes(selected.value)(s))
   });
 
 
@@ -45,7 +45,7 @@ export const useQuiz = (s = [], ss = []) => {
     return missingSelections.value.length > 0;
     // return selected.value.length < correctAnswers.length
   });
-  
+
   const isFullyCorrect = computed(() => {
     return !isMissingAnswer.value && isCorrectSoFar.value
     // return equals(selected.value, correctAnswers);
@@ -55,10 +55,15 @@ export const useQuiz = (s = [], ss = []) => {
     selected.value = arr;
   }
 
+
   return {
-    isFullyCorrect,
+    selected,
     setAnswers,
+    incorrectSelections,
+    correctSelections,
+    missingSelections,
+    isCorrectSoFar,
+    isMissingAnswer,
+    isFullyCorrect,
   }
 }
-
-export const useQuizStore = defineStore('quiz', useQuiz) 

@@ -2,6 +2,7 @@
 import { ref } from 'vue'
 import { useStore } from '../store'
 import { useQuiz, useQuizStore } from '../store/quiz'
+import {subsetType} from '../store/factory.js';
 
 defineProps()
 
@@ -9,11 +10,29 @@ const store = useStore()
 const q = useQuizStore();
 
 const count = ref(0)
+
+const correctAnswer = [1,2,3]
+
+// const type = 'optional';
+// const type = 'required';
+const type = 'required-correct';
+const sub = subsetType[type](correctAnswer, []);
+
+sub.setAnswers([1,2])
+// sub.setAnswers([])
+sub.setAnswers([1,3, 2])
+
 </script>
 
 <template>
+
   <h1>{{ msg }}</h1>
 
+  <div v-for="(value, key) in sub" :key="key">
+    <div v-if="typeof value !== 'function'">
+    {{key}} - {{value}}
+    </div>
+  </div>
   <!-- <button @click="store.increment">increment</button>
 
   {{store}}
