@@ -17,11 +17,12 @@ const correctAnswer = [1,2,3]
 // const type = 'optional';
 // const type = 'required';
 const type = 'required-correct';
-const sub = subsetType[type](correctAnswer, []);
+const sub = subsetType[type](correctAnswer, [], 3, true);
 
 sub.setSelected([1,2])
 // sub.setAnswers([])
 sub.setSelected([1,3, 2])
+sub.setSelected([1])
 
 </script>
 
