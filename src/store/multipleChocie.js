@@ -3,13 +3,16 @@ import { computed, ref } from 'vue';
 import { subset } from './subset'
 import { limitChoices } from './limitChoices';
 
-export const optional = (s = [], ss = [], { limitChoicesLength, removeLast }) => {
-
-  const obj = limitChoices({
+const mkObj = (s, ss, options) => {
+  return limitChoices({
     obj: subset(s, ss),
-    limitChoicesLength,
-    removeLast
+    ...options
   })
+}
+
+export const optional = (s = [], ss = [], options) => {
+
+  const obj = mkObj(s, ss, options)
 
   const canProceed = ref(true);
 
@@ -19,13 +22,9 @@ export const optional = (s = [], ss = [], { limitChoicesLength, removeLast }) =>
   }
 }
 
-export const required = (s = [], ss = [], { limitChoicesLength, removeLast }) => {
+export const required = (s = [], ss = [], options) => {
 
-  const obj = limitChoices({
-    obj: subset(s, ss),
-    limitChoicesLength,
-    removeLast
-  })
+  const obj = mkObj(s, ss, options)
 
   const canProceed = computed(() => {
     return obj.selected.value.length > 0;
@@ -37,13 +36,9 @@ export const required = (s = [], ss = [], { limitChoicesLength, removeLast }) =>
   }
 }
 
-export const requiredCorrect = (s = [], ss = [], { limitChoicesLength, removeLast }) => {
+export const requiredCorrect = (s = [], ss = [], options) => {
 
-  const obj = limitChoices({
-    obj: subset(s, ss),
-    limitChoicesLength,
-    removeLast
-  })
+  const obj = mkObj(s, ss, options)
 
   const canProceed = obj.isFullyCorrect;
 
