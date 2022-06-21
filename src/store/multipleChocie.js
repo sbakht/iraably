@@ -4,10 +4,9 @@ import { subset } from './subset'
 import { limitChoices } from './limitChoices';
 
 const mkObj = (s, ss, options) => {
-  return limitChoices({
-    obj: subset(s, ss),
-    ...options
-  })
+  const sub = limitChoices(subset, options)
+
+  return sub(s, ss)
 }
 
 export const optional = (s = [], ss = [], options) => {
