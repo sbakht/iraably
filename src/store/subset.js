@@ -1,4 +1,4 @@
-import { computed, ref } from 'vue';
+import { computed, ref, readonly } from 'vue';
 import { defineStore } from 'pinia'
 
 const allTrue = arr => arr.reduce((curr, accum) => curr && accum, true)
@@ -51,14 +51,26 @@ export const subset = (s = [], ss = []) => {
     // return equals(selected.value, correctAnswers);
   });
 
-  const setAnswers = (arr) => {
+  const setSelected = (arr) => {
     selected.value = arr;
   }
 
+  const toggle = (i) => {
+    if (includes(selected.value)(i)) {
+      selected.value = selected.value.filter(x => x !== i)
+    } else {
+      selected.value.push(i)
+    }
+  }
+
+  const isSelected = i => includes(selected.value)(i)
+
 
   return {
-    selected,
-    setAnswers,
+    selected: readonly(selected),
+    setSelected,
+    toggle,
+    isSelected,
     incorrectSelections,
     correctSelections,
     missingSelections,

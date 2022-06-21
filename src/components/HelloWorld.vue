@@ -11,6 +11,7 @@ const q = useQuizStore();
 
 const count = ref(0)
 
+const choices = [1,2,3,4,5];
 const correctAnswer = [1,2,3]
 
 // const type = 'optional';
@@ -18,15 +19,23 @@ const correctAnswer = [1,2,3]
 const type = 'required-correct';
 const sub = subsetType[type](correctAnswer, []);
 
-sub.setAnswers([1,2])
+sub.setSelected([1,2])
 // sub.setAnswers([])
-sub.setAnswers([1,3, 2])
+sub.setSelected([1,3, 2])
 
 </script>
 
 <template>
 
+
   <h1>{{ msg }}</h1>
+
+  <div>
+    Choices  
+    <div v-for="choice in choices" :key="choice">
+      <button @click="sub.toggle(choice)">{{choice}} - {{sub.isSelected(choice)}}</button>
+    </div>
+  </div>
 
   <div v-for="(value, key) in sub" :key="key">
     <div v-if="typeof value !== 'function'">
