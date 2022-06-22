@@ -16,8 +16,17 @@ export const useNavigation = (questions) => {
     return questionById(currentId.value);
   });
 
+  const isFinished = ref(false);
+
+  const finish = () => { isFinished.value = true }
+
+
   const next = () => {
-    currentId.value++;
+    if (currentId.value >= questions.length - 1) {
+      finish();
+    } else {
+      currentId.value++;
+    }
   };
 
   const previous = () => {
@@ -28,6 +37,7 @@ export const useNavigation = (questions) => {
 
   const reset = () => {
     currentId.value = 0;
+    isFinished.value = false;
   };
 
   // const answers = ref({})
@@ -64,6 +74,7 @@ export const useNavigation = (questions) => {
     next,
     previous,
     reset,
+    isFinished: readonly(isFinished)
     // answer,
     // answers,
     // formattedAnswers,

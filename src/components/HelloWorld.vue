@@ -16,9 +16,9 @@ const count = ref(0)
 const choices = computed(() => {
   return q.currentQuestion.value.answers.map(x => x.id);
 });
-// const type = 'optional';
+const type = 'optional';
 // const type = 'required';
-const type = 'required-correct';
+// const type = 'required-correct';
 
 
 const sub = computed(() => {
@@ -58,6 +58,9 @@ const sub = computed(() => {
     <button :disabled="!sub.canProceed.value" @click="q.next">Next question</button>
     <button @click="q.reset">Reset</button>
     {{ q.currentQuestion.value.title }}
+    <div>
+      Finished: {{q.isFinished}}
+    </div>
 
     <!-- <div>
       <div v-for="answer in q.currentQuestion.value.answers">
