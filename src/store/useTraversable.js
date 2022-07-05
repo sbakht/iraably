@@ -6,12 +6,16 @@ function getById(arr, id) {
 
 const endID = -1;
 
-export const useTraversable = (arr) => {
+export const useTraversable = (arr, { initialId = 0 } = {}) => {
   if (!arr || typeof arr !== "object" || arr.length < 1) {
     throw new Error("must have defined array");
   }
 
-  const currentId = ref(0);
+  if (initialId < 0 || initialId >= unref(arr).length) {
+    throw new Error(`initialId value ${initialId} is out of bounds`)
+  }
+
+  const currentId = ref(initialId);
 
   const byId = (id) => {
     if (id === endID) {
@@ -24,8 +28,8 @@ export const useTraversable = (arr) => {
     return byId(currentId.value);
   });
 
-  const isAtStart = ref(true);
-  const isFinished = ref(false);
+  const isAtStart = ref(initialId === 0);
+  const isFinished = ref(initialId === endID);
 
   const finish = () => {
     currentId.value = endID;

@@ -11,10 +11,7 @@ expect.extend({
     return {
       pass,
       message: () => {
-        if (got.isFinished.value) {
-          return `Traversable should be at start`;
-        }
-        return `Traversable should not be at start`;
+        return `\nExpected index: ${expected}\nGot index: ${got.currentId.value}`;
       },
     };
   },
@@ -47,7 +44,7 @@ expect.extend({
 });
 
 test("initalizes at start of traversable", () => {
-  const t = useTraversable([{ id: 1 }]);
+  const t = useTraversable(arr);
   expect(t).toBeAtStart();
 });
 
@@ -77,16 +74,12 @@ test("can go forward and back", () => {
 test("can go forward and back and get start/finish state", () => {
   const t = useTraversable(arr);
 
-  expect(t).toBeAtStart();
-
   t.next();
-
   expect(t).not.toBeAtStart();
   expect(t).not.toBeFinished();
 
   t.next();
   t.next();
-
   expect(t).toBeFinished();
 
   t.previous();
@@ -99,16 +92,16 @@ test("can go forward and back and get start/finish state", () => {
 });
 
 test("can not go back when at start", () => {
-  const arr = [{ id: 1 }, { id: 3 }, { id: 7 }];
   const t = useTraversable(arr);
+
   t.previous();
   expect(t.currentId.value).toBe(0);
   expect(t.currentItem.value).toBe(arr[0]);
 });
 
 test("can not go forward when at end", () => {
-  const arr = [{ id: 1 }, { id: 3 }, { id: 7 }];
   const t = useTraversable(arr);
+
   t.next();
   t.next();
   t.next();
@@ -119,8 +112,7 @@ test("can not go forward when at end", () => {
 
 test("reset to start", () => {
   const t = useTraversable(arr);
-  t.next();
-  t.next();
+
   t.next();
   t.reset();
 
@@ -141,3 +133,21 @@ test("validation rules", () => {
     const t = useTraversable([]);
   }).toThrow();
 });
+
+
+test('preload an initial state in the middle', () => {
+  const t = useTraversable(arr, { initialId: 1 });
+
+  expect(t).toBeAtIndex(1);
+  expect(t).not.toBeAtStart();
+})
+
+test('preload an incorrect initial state throws an error', () => {
+  expect(() => {
+    const t = useTraversable(arr, { initialId: 3 });
+  }).toThrow();
+
+  expect(() => {
+    const t = useTraversable(arr, { initialId: -1 });
+  }).toThrow();
+})
