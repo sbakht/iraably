@@ -1,21 +1,20 @@
 import { computed, ref, readonly } from 'vue';
-import { defineStore } from 'pinia'
 
-const allTrue = arr => arr.reduce((curr, accum) => curr && accum, true)
+// const allTrue = arr => arr.reduce((curr, accum) => curr && accum, true)
 
 const includes = arr => v => arr.includes(v)
 
-const isSubset = (subset, superset) => {
-  return allTrue(subset.map(includes(superset)))
-}
+// const isSubset = (subset, superset) => {
+//   return allTrue(subset.map(includes(superset)))
+// }
 
-const equals = (subset, superset) => {
-  if (subset.length !== superset.length) {
-    return false;
-  }
+// const equals = (subset, superset) => {
+//   if (subset.length !== superset.length) {
+//     return false;
+//   }
 
-  return isSubset(subset, superset);
-}
+//   return isSubset(subset, superset);
+// }
 
 export const subset = (s = [], ss = []) => {
   // const choices = [];
