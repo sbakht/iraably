@@ -66,6 +66,20 @@ test("can not go forward when at end", () => {
   expect(t.isFinished.value).toBe(true);
 });
 
+test("reset to start", () => {
+  const arr = [{ id: 1 }, { id: 3 }, { id: 7 }];
+  const t = useTraversable(arr);
+  t.next();
+  t.next();
+  t.next();
+  t.reset();
+
+  expect(t.currentId.value).toBe(0);
+  expect(t.currentItem.value).toBe(arr[0]);
+  expect(t.isFinished.value).toBe(false);
+  expect(t.isAtStart.value).toBe(true);
+});
+
 test("validation rules", () => {
   expect(() => {
     const t = useTraversable();
