@@ -1,13 +1,22 @@
-import { computed, ref, readonly } from "vue";
+import { computed, ref, unref, readonly } from "vue";
 
 function getById(arr, id) {
-  return arr[id];
+  return unref(arr)[id];
 }
 
+const endID = -1;
+
 export const useTraversable = (arr) => {
+  if (!arr || typeof arr !== "object" || arr.length < 1) {
+    throw new Error("must have defined array");
+  }
+
   const currentId = ref(0);
 
   const byId = (id) => {
+    if (id === endID) {
+      return null;
+    }
     return getById(arr, id);
   };
 
@@ -18,10 +27,14 @@ export const useTraversable = (arr) => {
   const isAtStart = ref(true);
   const isFinished = ref(false);
 
-  const finish = () => { isFinished.value = true }
+  const finish = () => {
+    currentId.value = endID;
+    isAtStart.value = false;
+    isFinished.value = true;
+  };
 
   const next = () => {
-    if (currentId.value >= arr.length - 1) {
+    if (currentId.value >= unref(arr).length - 1) {
       finish();
     } else {
       currentId.value++;
@@ -30,9 +43,19 @@ export const useTraversable = (arr) => {
   };
 
   const previous = () => {
+    if (currentId.value === endID) {
+      currentId.value = unref(arr).length;
+    }
+
     if (currentId.value > 0) {
       currentId.value--;
     }
+
+    if (currentId.value === 0) {
+      isAtStart.value = true;
+    }
+
+    isFinished.value = false
   };
 
   const reset = () => {
