@@ -100,7 +100,7 @@ test("toggle", () => {
   expect(s.isSelected(7)).toEqual(false)
 });
 
-test("initial state", () => {
+test("does not care about order", () => {
   const s = useSubset([1, 3, 5], [1, 5, 3]);
   expect(s.selected.value).toEqual([1, 5, 3]);
   expect(s.incorrectSelections.value).toEqual([]);
