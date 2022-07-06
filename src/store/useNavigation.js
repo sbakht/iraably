@@ -1,4 +1,4 @@
-import { computed, ref, readonly, unref } from "vue";
+import { computed, ref, readonly } from "vue";
 import { useTraversable } from "./useTraversable";
 
 export const useNavigation = (questions) => {
