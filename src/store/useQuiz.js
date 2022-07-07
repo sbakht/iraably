@@ -57,6 +57,7 @@ export const useQuiz = (questions, scores, type = 'optional') => {
       const s = useUserScore(questions, scores, userAnswers, { partialCredit: true })
       return s.score;
     },
+    questions,
   }
 
 

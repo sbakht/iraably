@@ -69,6 +69,7 @@ export const useTraversable = (arr, { initialId = 0 } = {}) => {
   };
 
   return {
+    currentIndex: readonly(currentId),
     currentId: readonly(currentId),
     currentItem,
     next,

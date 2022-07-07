@@ -6,7 +6,7 @@ const arr = [{ id: 1 }, { id: 3 }, { id: 7 }];
 
 expect.extend({
   toBeAtIndex(got, expected) {
-    const pass = got.currentId.value === expected && got.currentItem.value === arr[expected]
+    const pass = got.currentId.value === expected && got.currentItem.value === arr[expected] && got.currentIndex.value === expected
 
     return {
       pass,
