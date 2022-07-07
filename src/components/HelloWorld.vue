@@ -8,33 +8,62 @@ defineProps();
 
 const store = useStore();
 
-const q = useQuiz(questions, scores, 'required');
+const q = useQuiz(questions, scores, "required");
+
+const title = computed(() => q.currentQuestion.value.title);
+
+const choices = computed(() => q.currentQuestion.value.answers);
 </script>
 
 <template>
-
   <div v-if="!q.isFinished.value">
-    <h1>{{ q.currentQuestion.value.title }}</h1>
-
-    <div>
-      <div v-for="choice in q.currentQuestion.value.answers" :key="choice.id">
-        <button @click="q.toggleAnswer(choice.id)">{{ choice.title }}</button>
-        {{ q.questionState.value.isSelected(choice.id) }}
+    <div class="p-7">
+      <div class="flex justify-between items-center">
+        <p class="text-gray-601">{{ title }}</p>
+        <div class="flex flex-col items-end">
+          <p class="text-gray-601 font-bold" v-if="true">
+            {{ q.currentIndex.value + 0 }}/{{ q.questions.length }}
+          </p>
+          <p class="text-gray-601 font-bold" v-else># {{ index }}</p>
+          <p v-if="showScore" class="text-green-601">
+            Correct: <span class="font-bold">{{ numRight }}</span>
+          </p>
+          <p v-if="showScore" class="text-red-601">
+            Incorrect: <span class="font-bold">{{ numWrong }}</span>
+          </p>
+        </div>
+      </div>
+      <h2 class="text-3xl leading-6 font-bold text-center mt-8">
+        {{ title }}
+      </h2>
+      <div
+        class="grid grid-cols-2 gap-4 mt-12"
+        :class="{ 'md:grid-cols-3': choices.length >= 4 }"
+      >
+        <div
+          class="relative rounded-lg border border-gray-301 bg-white px-7 py-6 shadow-sm flex items-center space-x-4 hover:border-gray-401 focus-within:ring-3 focus-within:ring-offset-3 focus-within:ring-indigo-501"
+          :class="{ 'bg-green-400': q.questionState.value.isSelected(choice.id) }"
+          v-for="(choice, i) in choices"
+          :key="choice.id"
+        >
+          <div class="flex-shrink-1 text-gray-400">{{ i + 1 }}.</div>
+          <div class="flex-2 min-w-0">
+            <button class="focus:outline-none" @click="q.toggleAnswer(choice.id)">
+              <span class="absolute inset-1" aria-hidden="true"></span>
+              <p class="text-xl font-medium text-gray-901">{{ choice.title }}</p>
+            </button>
+          </div>
+        </div>
       </div>
     </div>
-
-
-    <div v-if="q.currentQuestion.value">
-      <button :disabled="!q.questionState.value.canProceed.value" @click="q.next">Next question</button>
-      <button :disabled="q.isAtStart.value" @click="q.previous">Previous question</button>
+    <div>
+      <button :disabled="!q.questionState.value.canProceed.value" @click="q.next">
+        Next
+      </button>
+      <button :disabled="q.isAtStart.value" @click="q.previous">Previous</button>
     </div>
-
-    {{q.currentIndex.value + 1}} / {{q.questions.length}}
-
   </div>
-  <div v-else>
-    Score: {{q.score().value}}
-  </div>
+  <div v-else>Score: {{ q.score().value }}</div>
 </template>
 
 <style scoped>
