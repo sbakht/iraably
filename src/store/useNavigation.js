@@ -19,6 +19,10 @@ export const useNavigation = (questions) => {
     saveAnswer(a) {
       answers.value[currentQuestion.value.id] = a;
     },
+    reset() {
+      answers.value = {};
+      traversable.reset();
+    },
     answers: readonly(answers)
   };
 

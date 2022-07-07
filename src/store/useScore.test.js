@@ -1,6 +1,5 @@
 import { expect, test } from "vitest";
 import { useUserScore } from "./useUserScore";
-import { isReadonly } from "vue";
 
 const questions = [
   {

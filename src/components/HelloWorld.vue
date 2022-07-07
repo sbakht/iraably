@@ -1,14 +1,18 @@
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, watch, unref } from 'vue'
 import { useStore } from '../store'
 import { useNavigation } from '../store/useNavigation'
 import { subsetType } from '../store/factory.js';
 import { questions } from '../store/questions';
+import { useUserScore } from '../store/useUserScore';
 
 defineProps()
 
 const store = useStore()
 const q = useNavigation(questions);
+
+// const { answers, saveAnswer, clearAnswers, clearAnswer } = useUserScore(q)
+// const a = useNavigation(new Array(questions.length))
 
 const count = ref(0)
 
@@ -23,11 +27,26 @@ const type = 'optional';
 
 const sub = computed(() => {
   const correctAnswer = q.currentQuestion.value.correct
-  return subsetType[type](correctAnswer, [], {
+  return subsetType[type](correctAnswer, unref(q.currentAnswer), {
     limitChoicesLength: Infinity,
     removeLast: false,
   });
 });
+
+const next = () => {
+  q.saveAnswer(sub)
+  q.next();
+}
+
+const previous = () => {
+  // clearAnswer(sub)
+  q.previous()
+}
+
+const reset = () => {
+  // clearAnswers();
+  q.reset();
+}
 
 
 </script>
@@ -55,8 +74,9 @@ const sub = computed(() => {
   {{ store.double }}
 
   <div v-if="q.currentQuestion.value">
-    <button :disabled="!sub.canProceed.value" @click="q.next">Next question</button>
-    <button @click="q.reset">Reset</button>
+    <button :disabled="!sub.canProceed.value" @click="next">Next question</button>
+    <button :disabled="q.isAtStart.value" @click="previous">Previous question</button>
+    <button @click="reset">Reset</button>
     {{ q.currentQuestion.value.title }}
     <div>
       Finished: {{q.isFinished}}
@@ -67,6 +87,12 @@ const sub = computed(() => {
         <button @click="q.answer(answer.id)">{{answer.title}}</button>
       </div>
     </div> -->
+  </div>
+
+  {{answers}}
+
+  <div>
+    {{q.data}}
   </div>
 
   <!-- <div v-if="q.answers.formattedAnswers">

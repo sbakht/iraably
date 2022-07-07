@@ -52,6 +52,9 @@ test("current question", () => {
 
   n.next();
   expect(n.currentQuestion.value).toEqual(questions[1]);
+
+  n.reset();
+  expect(n.currentQuestion.value).toEqual(questions[0]);
 });
 
 test("current answer", () => {
@@ -75,4 +78,7 @@ test("current answer", () => {
   });
 
   expect(isReadonly(n.answers)).toBe(true);
+
+  n.reset();
+  expect(n.answers.value).toEqual({})
 });
