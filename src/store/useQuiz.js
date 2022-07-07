@@ -3,17 +3,14 @@ import { useNavigation } from './useNavigation';
 import { subsetType } from './factory.js';
 import { useUserScore } from './useUserScore';
 
-function getById(questions, id) {
-  return questions[id];
-}
 
-export const useQuiz = (questions, scores) => {
+export const useQuiz = (questions, scores, type = 'optional') => {
 
   const n = useNavigation(questions);
 
   const currentQuestion = n.currentQuestion
 
-  const type = 'optional';
+  // const type = 'optional';
   // const type = 'required';
   // const type = 'required-correct';
 
@@ -29,12 +26,13 @@ export const useQuiz = (questions, scores) => {
 
   const toggleAnswer = id => {
     sub.value.toggle(id)
-    // n.saveAnswer([id])
   }
 
   const next = () => {
-    n.saveAnswer(sub.value.selected.value);
-    n.next();
+    if (sub.value.canProceed.value) {
+      n.saveAnswer(sub.value.selected.value);
+      n.next();
+    }
   }
 
   const previous = () => {
@@ -43,7 +41,6 @@ export const useQuiz = (questions, scores) => {
   }
 
   const reset = () => {
-    // clearAnswers();
     n.reset();
   }
 

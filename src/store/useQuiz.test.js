@@ -1,5 +1,5 @@
 import { expect, test } from "vitest";
-import { useQuiz } from "./quiz2";
+import { useQuiz } from "./useQuiz";
 
 const questions = [
   {
@@ -90,4 +90,38 @@ test('walkthrough quiz', () => {
   expect(q.isFinished.value).toEqual(true)
 
   expect(q.score().value).toEqual(9)
+})
+
+test('able to proceed', () => {
+  const q = useQuiz(questions, scores, 'optional')
+
+  q.next();
+  expect(q.currentQuestion.value).toEqual(questions[1])
+})
+
+test('must select to proceed', () => {
+  const q = useQuiz(questions, scores, 'required')
+
+  q.next();
+  expect(q.currentQuestion.value).toEqual(questions[0])
+
+  q.toggleAnswer(1);
+  q.next();
+  expect(q.currentQuestion.value).toEqual(questions[1])
+})
+
+test('must be correct to proceed', () => {
+  const q = useQuiz(questions, scores, 'required-correct')
+
+  q.next();
+  expect(q.currentQuestion.value).toEqual(questions[0])
+
+  q.toggleAnswer(1);
+  q.next();
+  expect(q.currentQuestion.value).toEqual(questions[0])
+
+  q.toggleAnswer(1);
+  q.toggleAnswer(2);
+  q.next();
+  expect(q.currentQuestion.value).toEqual(questions[1])
 })
