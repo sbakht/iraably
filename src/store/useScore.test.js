@@ -1,5 +1,5 @@
 import { expect, test } from "vitest";
-import { useUserScore } from "./useUserScore";
+import { useUserScore } from "./useScore";
 
 const questions = [
   {
@@ -52,6 +52,16 @@ test("adds up points for each question", () => {
 });
 
 test("partial points for partial correct", () => {
+  const s = useUserScore(questions, scores, userAnswers, { partialCredit: true })
+  expect(s.score.value).toBe(9)
+});
+
+test("partial points for partial correct", () => {
+  const userAnswers = {
+    1: 2,
+    3: [1],
+    7: [1, 2, 4],
+  }
   const s = useUserScore(questions, scores, userAnswers, { partialCredit: true })
   expect(s.score.value).toBe(9)
 });

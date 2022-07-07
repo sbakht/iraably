@@ -1,7 +1,7 @@
 import { computed, ref, unref } from 'vue';
 import { useNavigation } from './useNavigation';
 import { subsetType } from './factory.js';
-import { useUserScore } from './useUserScore';
+import { useUserScore } from './useScore';
 
 
 export const useQuiz = (questions, scores, type = 'optional') => {
