@@ -1,4 +1,5 @@
 <script setup>
+import BaseButton from './BaseButton.vue';
 import { ref, computed, watch, unref } from "vue";
 import { useStore } from "../store";
 import { questions, scores } from "../store/questions";
@@ -57,10 +58,11 @@ const choices = computed(() => q.currentQuestion.value.answers);
       </div>
     </div>
     <div>
-      <button :disabled="!q.questionState.value.canProceed.value" @click="q.next">
+
+      <BaseButton :disabled="!q.questionState.value.canProceed.value" @click="q.next" class="m-5">
         Next
-      </button>
-      <button :disabled="q.isAtStart.value" @click="q.previous">Previous</button>
+      </BaseButton>
+      <BaseButton :disabled="q.isAtStart.value" @click="q.previous">Previous</BaseButton>
     </div>
   </div>
   <div v-else>Score: {{ q.score().value }}</div>
