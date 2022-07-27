@@ -32,6 +32,15 @@ const questions = [
       { id: 4, title: "orange" },
     ],
   },
+  {
+    id: 8,
+    title: "What is the day?",
+    correct: [2],
+    answers: [
+      { id: 1, title: "Monday" },
+      { id: 2, title: "Friday" },
+    ],
+  },
 ];
 
 const scores = {
@@ -44,6 +53,7 @@ const userAnswers = {
   1: 2,
   3: [1, 3],
   7: [1, 2, 4],
+  8: 1,
 }
 
 test("adds up points for each question", () => {
@@ -61,7 +71,19 @@ test("partial points for partial correct", () => {
     1: 2,
     3: [1],
     7: [1, 2, 4],
+    8: 1,
   }
   const s = useUserScore(questions, scores, userAnswers, { partialCredit: true })
   expect(s.score.value).toBe(9)
+});
+
+test("default to 5 points for full credit", () => {
+  const userAnswers = {
+    1: 2,
+    3: [1, 3],
+    7: [1, 2, 4],
+    8: 2,
+  }
+  const s = useUserScore(questions, scores, userAnswers)
+  expect(s.score.value).toBe(12)
 });

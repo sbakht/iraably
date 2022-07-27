@@ -22,8 +22,10 @@ const equals = (subset, superset) => {
 };
 
 const precentCorrect = (answer, correct) => {
-  return answer.filter(includes(correct)).length / correct.length;
+  return convertToArray(answer).filter(includes(correct)).length / correct.length;
 };
+
+const getFullCredit = (p, id) => p[id]?.fullCredit || 5;
 
 export const useUserScore = (
   questions,
@@ -39,11 +41,11 @@ export const useUserScore = (
         const givenAnswer = unref(givenAnswers)[id];
 
         if (equals(givenAnswer, q.correct)) {
-          return pointSystem[id].fullCredit;
+          return getFullCredit(pointSystem, id)
         }
         if (partialCredit) {
           return Math.round(
-            precentCorrect(givenAnswer, q.correct) * pointSystem[id].fullCredit
+            precentCorrect(givenAnswer, q.correct) * getFullCredit(pointSystem, id)
           );
         }
         return 0;
