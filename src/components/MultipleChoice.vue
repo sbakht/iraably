@@ -3,18 +3,18 @@
     <div class="p-7">
       <div class="flex justify-between items-center">
         <p class="text-gray-600">Determine the answer</p>
-        <div class="flex flex-col items-end">
+        <!-- <div class="flex flex-col items-end">
           <p class="text-gray-600 font-bold" v-if="true">
             {{ q.currentIndex.value + 0 }}/{{ q.questions.length }}
           </p>
           <p class="text-gray-600 font-bold" v-else># {{ index }}</p>
-          <p v-if="showScore" class="text-green-601">
+          <p v-if="showScore" class="text-green-600">
             Correct: <span class="font-bold">{{ numRight }}</span>
           </p>
           <p v-if="showScore" class="text-red-600">
             Incorrect: <span class="font-bold">{{ numWrong }}</span>
           </p>
-        </div>
+        </div> -->
       </div>
       <h2 class="text-3xl leading-6 font-bold text-center mt-8">
         {{ title }}
@@ -29,11 +29,11 @@
           v-for="(choice, i) in choices"
           :key="choice.id"
         >
-          <div class="flex-shrink-1 text-gray-400">{{ i + 1 }}.</div>
+          <div class="flex-shrink-1 text-gray-400">{{getHotkey(i)}}.</div>
           <div class="flex-2 min-w-0">
             <button class="focus:outline-none" @click="q.toggleAnswer(choice.id)">
               <span class="absolute inset-1" aria-hidden="true"></span>
-              <p class="text-xl font-medium text-gray-901">{{ choice.title }}</p>
+              <p class="text-xl font-medium text-gray-900">{{ choice.title }}</p>
             </button>
           </div>
         </div>
@@ -58,6 +58,8 @@ import BaseButton from "./BaseButton.vue";
 import { ref, computed, watch, unref } from "vue";
 import { useStore } from "../store";
 import { useQuiz } from "../store/useQuiz";
+import {getHotkey} from '../utils/hotkey.js'
+
 
 const props = defineProps({
   data: {
