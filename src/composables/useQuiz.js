@@ -1,6 +1,6 @@
 import { computed, ref, unref } from 'vue';
 import { useNavigation } from './useNavigation';
-import { subsetType } from './factory.js';
+import { subsetType } from '../store/factory.js';
 import { useUserScore } from './useScore';
 
 

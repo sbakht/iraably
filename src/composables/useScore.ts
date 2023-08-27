@@ -1,16 +1,17 @@
 import { computed, ref, readonly, watch, unref } from "vue";
 
-const allTrue = (arr) => arr.reduce((curr, accum) => curr && accum, true);
 
-const includes = (arr) => (v) => arr.includes(v);
+const allTrue = (arr: boolean[]) => arr.reduce((curr, accum) => curr && accum, true);
 
-const isSubset = (subset, superset) => {
+const includes = (arr: number[]) => (v: number) => arr.includes(v);
+
+const isSubset = (subset: [], superset: []) => {
   return allTrue(subset.map(includes(superset)));
 };
 
 const convertToArray = (v) => (v.length == undefined ? [v] : v);
 
-const equals = (subset, superset) => {
+const equals = (subset: number[] | number, superset: number[] | number) => {
   const s1 = convertToArray(subset);
   const s2 = convertToArray(superset);
 

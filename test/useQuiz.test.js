@@ -1,5 +1,5 @@
 import { expect, test } from "vitest";
-import { useQuiz } from "./useQuiz";
+import { useQuiz } from "../src/store/useQuiz";
 
 const questions = [
   {

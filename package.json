@@ -12,6 +12,7 @@
     "coverage": "vitest run --coverage"
   },
   "dependencies": {
+    "fp-ts": "^2.12.2",
     "pinia": "^2.0.14",
     "vue": "^3.2.25"
   },

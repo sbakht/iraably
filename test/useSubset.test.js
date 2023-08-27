@@ -1,5 +1,5 @@
 import { expect, test } from "vitest";
-import { subset as useSubset } from "./subset";
+import { subset as useSubset } from "../src/store/subset";
 
 
 const arr = [{ id: 1 }, { id: 3 }, { id: 7 }];

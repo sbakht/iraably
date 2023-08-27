@@ -1,5 +1,5 @@
 import { expect, test } from "vitest";
-import { useNavigation } from "./useNavigation";
+import { useNavigation } from "../src/store/useNavigation";
 import { isReadonly } from "vue";
 
 const questions = [

@@ -1,5 +1,5 @@
 import { expect, test } from "vitest";
-import { useUserScore } from "./useScore";
+import { useUserScore } from "../src/composables/useScore";
 
 const questions = [
   {
@@ -84,6 +84,6 @@ test("default to 5 points for full credit", () => {
     7: [1, 2, 4],
     8: 2,
   }
-  const s = useUserScore(questions, scores, userAnswers)
+  const s = useUserScore(questions, scores, userAnswers) 
   expect(s.score.value).toBe(12)
 });

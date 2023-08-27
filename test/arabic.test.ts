@@ -1,8 +1,11 @@
 import { expect, test } from "vitest";
 import { option as O } from "fp-ts";
+import * as A from 'fp-ts/lib/Array'
+
+type Tense = 'Past' | 'Present' | 'Command'
 
 type Beh = { arChar: "ر"; enChar: "b" };
-type Nun = { arChar: "ف"; enChar: "n" };
+type Nun = { arChar: "ن"; enChar: "n" };
 type Seen = { arChar: "س"; enChar: "s" };
 type Sheen = { arChar: "ش"; enChar: "$" };
 type Theh = { arChar: "ر"; enChar: "v" };
@@ -81,11 +84,10 @@ type Letter =
 const Sheen = 1;
 
 const lettersArray: Letter[] = [
-  { arChar: "ف", enChar: "n" },
+  { arChar: "ن", enChar: "n" },
   { arChar: "س", enChar: "s" },
   { arChar: "ش", enChar: "$" },
   { arChar: "ر", enChar: "b" },
-  { arChar: "ف", enChar: "n" },
   { arChar: "س", enChar: "s" },
   { arChar: "ش", enChar: "$" },
   { arChar: "ر", enChar: "v" },
@@ -124,9 +126,6 @@ const lettersArray: Letter[] = [
 ];
 
 const letterMap: { [key: string]: Letter } = {
-  n: { arChar: "ف", enChar: "n" },
-  s: { arChar: "س", enChar: "s" },
-  $: { arChar: "ش", enChar: "$" },
 };
 
 // const letterMap: {[key: string]: Letter} = {
@@ -156,7 +155,14 @@ const letterMap: { [key: string]: Letter } = {
 //   return O.none;
 // }
 
-function enToLetter(str: string): O.Option<Letter> {
+
+function toLetters(str: String): O.Option<Letter[]> {
+  const helper: O.Option<Letter>[] = str.split('').map(mkArabic);
+
+  return A.array.sequence(O.option)(helper)
+}
+
+function mkArabic(str: string): O.Option<Letter> {
   if (letterMap[str]) return O.some(letterMap[str]);
 
   const f: Letter | undefined = lettersArray.find((l) => l.enChar === str);
@@ -166,12 +172,22 @@ function enToLetter(str: string): O.Option<Letter> {
 }
 
 test("adds up points for each question", () => {
-  expect(enToLetter("string")).toEqual(O.none);
-  expect(enToLetter("")).toEqual(O.none);
-  expect(enToLetter("]")).toEqual(O.none);
-  expect(enToLetter("n")).toEqual(O.some({ arChar: "ف", enChar: "n" }));
-  expect(enToLetter("D")).toEqual(O.some({ arChar: "ض", enChar: "D" }));
-  expect(enToLetter("$")).toEqual(O.some({ arChar: "ش", enChar: "$" }));
+  expect(mkArabic("string")).toEqual(O.none);
+  expect(mkArabic("")).toEqual(O.none);
+  expect(mkArabic("]")).toEqual(O.none);
+
+  const a = { arChar: "ن", enChar: "n" }
+  const b = { arChar: "ض", enChar: "D" }
+  const c = { arChar: "ش", enChar: "$" }
+
+  expect(mkArabic("n")).toEqual(O.some(a));
+  expect(mkArabic("D")).toEqual(O.some(b));
+  expect(mkArabic("$")).toEqual(O.some(c));
+
+  const arr = [O.some(a), O.some(b), O.some(c)]
+  const arr2 = O.some([a,b,c])
+
+  expect(toLetters("nD$")).toEqual(arr2)
 });
 
 // enum Color {

@@ -1,5 +1,5 @@
 import { expect, test } from "vitest";
-import { useTraversable } from "./useTraversable";
+import { useTraversable } from "../src/store/useTraversable";
 
 
 const arr = [{ id: 1 }, { id: 3 }, { id: 7 }];

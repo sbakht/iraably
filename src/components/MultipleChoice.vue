@@ -56,7 +56,6 @@
 <script setup lang="ts">
 import BaseButton from "./BaseButton.vue";
 import { ref, computed, watch, unref } from "vue";
-import { useStore } from "../store";
 import { useQuiz } from "../store/useQuiz";
 import {getHotkey} from '../utils/hotkey.js'
 
@@ -68,7 +67,6 @@ const props = defineProps({
   }
 });
 
-const store = useStore();
 
 const q = useQuiz(props.data.questions, props.data.scores, "required");
 
@@ -94,3 +92,4 @@ code {
   color: #304455;
 }
 </style>
+../composables/useQuiz
